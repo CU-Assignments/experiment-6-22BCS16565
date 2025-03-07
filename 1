@@ -1,0 +1,35 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class MySQLConnectionExample {
+    public static void main(String[] args) {
+        // Database URL, username, and password
+        String url = "jdbc:mysql://localhost:3306/your_database"; // Replace with your database name
+        String user = "your_username"; // Replace with your MySQL username
+        String password = "your_password"; // Replace with your MySQL password
+
+        // SQL query to fetch all records from Employee table
+        String query = "SELECT EmpID, Name, Salary FROM Employee";
+
+        // Establish connection and fetch data
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            // Display the retrieved records
+            System.out.println("EmpID | Name | Salary");
+            System.out.println("----------------------");
+            while (rs.next()) {
+                int empID = rs.getInt("EmpID");
+                String name = rs.getString("Name");
+                double salary = rs.getDouble("Salary");
+                System.out.println(empID + " | " + name + " | " + salary);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
