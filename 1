@@ -1,35 +1,33 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.*;
+import java.util.stream.*;
 
-public class MySQLConnectionExample {
+// Easy Level: Sorting Employees using Lambda
+class Employee {
+    String name;
+    int age;
+    double salary;
+
+    public Employee(String name, int age, double salary) {
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+    }
+
+    @Override
+    public String toString() {
+        return name + " - " + age + " - " + salary;
+    }
+}
+
+public class LambdaStreamExamples {
     public static void main(String[] args) {
-        // Database URL, username, and password
-        String url = "jdbc:mysql://localhost:3306/your_database"; // Replace with your database name
-        String user = "your_username"; // Replace with your MySQL username
-        String password = "your_password"; // Replace with your MySQL password
-
-        // SQL query to fetch all records from Employee table
-        String query = "SELECT EmpID, Name, Salary FROM Employee";
-
-        // Establish connection and fetch data
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
-
-            // Display the retrieved records
-            System.out.println("EmpID | Name | Salary");
-            System.out.println("----------------------");
-            while (rs.next()) {
-                int empID = rs.getInt("EmpID");
-                String name = rs.getString("Name");
-                double salary = rs.getDouble("Salary");
-                System.out.println(empID + " | " + name + " | " + salary);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        List<Employee> employees = Arrays.asList(
+            new Employee("Alice", 30, 50000),
+            new Employee("Bob", 25, 60000),
+            new Employee("Charlie", 35, 40000)
+        );
+        
+        employees.sort(Comparator.comparingDouble(emp -> emp.salary));
+        employees.forEach(System.out::println);
     }
 }
